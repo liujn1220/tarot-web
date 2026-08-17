@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="星辰塔罗 - 78张完整塔罗牌在线占卜">
+  <meta name="theme-color" content="#0d0818">
+  <title>星辰塔罗 · 聆听内心的声音</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 星空背景 -->
+  <div class="starfield" id="starfield"></div>
+
+  <!-- ============ 首页 ============ -->
+  <div class="page active" id="page-home">
+    <div class="container">
+      <div class="header">
+        <div class="moon-symbol">☾</div>
+        <h1 class="title-main">星辰塔罗</h1>
+        <p class="title-sub">聆听内心的声音</p>
+      </div>
+
+      <!-- 今日一牌 -->
+      <div class="quick-draw" onclick="quickDraw()">
+        <div class="quick-icon">🔮</div>
+        <div class="quick-text">
+          <div class="quick-title">今日一牌</div>
+          <div class="quick-desc">轻触抽取，获取当下指引</div>
+        </div>
+        <div class="quick-arrow">→</div>
+      </div>
+
+      <!-- 牌阵列表 -->
+      <div class="section-title">选择牌阵</div>
+      <div class="spread-list" id="spreadList"></div>
+
+      <div class="footer">
+        <p>塔罗牌是一种映照内心的工具，解读仅供参考</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 抽牌页 ============ -->
+  <div class="page" id="page-draw">
+    <div class="container">
+
+      <!-- 问题输入 -->
+      <div class="question-panel" id="questionPanel">
+        <div class="moon-symbol">☾</div>
+        <div class="q-title">在抽牌之前</div>
+        <div class="q-subtitle">静心默念你的问题</div>
+        <div class="q-spread-name" id="qSpreadName"></div>
+        <div class="input-wrap">
+          <textarea id="questionInput" placeholder="（可选）输入你想问的问题..." maxlength="100"></textarea>
+        </div>
+        <div class="q-btns">
+          <button class="btn-ghost" onclick="startShuffle()">直接洗牌</button>
+        </div>
+      </div>
+
+      <!-- 抽牌区 -->
+      <div class="draw-panel" id="drawPanel" style="display:none;">
+        <div class="spread-header">
+          <div class="spread-title" id="drawSpreadName"></div>
+          <div class="progress-text" id="progressText"></div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <div class="question-echo" id="questionEcho" style="display:none;">
+          <span class="text-muted">你的问题：</span>
+          <span class="q-text" id="qEcho"></span>
+        </div>
+
+        <!-- 洗牌动画 -->
+        <div class="shuffle-area" id="shuffleArea" style="display:none;">
+          <div class="card-stack" id="cardStack">
+            <div class="stack-card"></div>
+            <div class="stack-card"></div>
+            <div class="stack-card"></div>
+            <div class="stack-card"></div>
+          </div>
+          <div class="shuffle-text">星辰正在排列...</div>
+        </div>
+
+        <!-- 扇形选牌 -->
+        <div class="fan-area" id="fanArea" style="display:none;">
+          <div class="fan-container" id="fanContainer"></div>
+          <div class="fan-hint">凭直觉点击一张牌</div>
+        </div>
+
+        <!-- 已抽 -->
+        <div class="drawn-area" id="drawnArea" style="display:none;">
+          <div class="drawn-label">已抽</div>
+          <div class="drawn-cards-row" id="drawnCardsRow"></div>
+        </div>
+
+        <div class="draw-btns" id="drawBtns" style="display:none;">
+          <button class="btn-ghost" onclick="reshuffle()">重新洗牌</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 结果页 ============ -->
+  <div class="page" id="page-result">
+    <div class="container">
+      <div class="result-header">
+        <div class="moon-symbol">☾</div>
+        <div class="result-title" id="resultSpreadName"></div>
+        <div class="result-desc" id="resultSpreadDesc"></div>
+        <div class="result-question" id="resultQuestion" style="display:none;">
+          <span class="text-muted">所问：</span>
+          <span id="resultQText"></span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 牌阵总览 -->
+      <div class="overview-section">
+        <div class="section-label">牌阵总览</div>
+        <div class="overview-grid" id="overviewGrid"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 逐张解读 -->
+      <div class="detail-section">
+        <div class="section-label">逐张解读</div>
+        <div id="detailList"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- 综合建议 -->
+      <div class="advice-section">
+        <div class="advice-icon">✦</div>
+        <div class="advice-title">综合指引</div>
+        <div class="advice-text">
+          每一张牌都是内心的一面镜子。牌阵中的牌相互呼应，共同构成一幅完整的图景。请将各位置的含义串联起来理解，感受它们之间的对话。塔罗牌不是预言，而是映照——答案早已在你心中，牌只是帮你看见它。
+        </div>
+      </div>
+
+      <div class="result-btns">
+        <button class="btn-ghost" onclick="shareResult()">分享给好友</button>
+        <button class="btn-primary" onclick="goHome()">再次占卜</button>
+      </div>
+
+      <div class="footer">
+        <p>愿你从牌中获得洞察与平静</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 牌面大图弹窗 -->
+  <div class="card-modal" id="cardModal" onclick="closeCardModal(event)">
+    <div class="modal-content">
+      <img id="modalImg" src="" alt="牌面">
+      <div class="modal-name" id="modalName"></div>
+    </div>
+  </div>
+
+  <script src="js/tarot-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
